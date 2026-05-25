@@ -5,6 +5,7 @@ const cors = require("cors");
 const authRoutes = require("./routes/authRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const scholarRoutes = require("./routes/scholarRoutes");
+const scholarshipRoutes = require("./routes/scholarshipRoutes");
 
 const app = express();
 
@@ -15,5 +16,6 @@ connectDB();
 app.use("/api/admin", adminRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/scholars", scholarRoutes);
+app.use("/api/scholarships", scholarshipRoutes);
 
 app.listen(8000, () => console.log("Server running"));
