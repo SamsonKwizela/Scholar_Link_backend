@@ -57,8 +57,63 @@ const getScholarById = async (req, res) => {
   }
 };
 
+const updateScholar = async (req, res) => {
+  try {
+    const { name, description, category } = req.body;
+
+    const scholar = await Scholar.findById(req.params.id);
+
+    if (!scholar) {
+      return res.status(404).json({
+        message: "Scholar not found",
+      });
+    }
+
+    // update fields
+    scholar.name = name || scholar.name;
+    scholar.description = description || scholar.description;
+    scholar.category = category || scholar.category;
+
+    // save updated scholar
+    const updatedScholar = await scholar.save();
+
+    res.status(200).json({
+      message: "Scholar updated successfully",
+      scholar: updatedScholar,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+const deleteScholar = async (req, res) => {
+  try {
+    const scholar = await Scholar.findById(req.params.id);
+
+    if (!scholar) {
+      return res.status(404).json({
+        message: "Scholar not found",
+      });
+    }
+
+    await scholar.deleteOne();
+
+    res.status(200).json({
+      message: "Scholar deleted successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   createScholar,
   getScholars,
   getScholarById,
+  updateScholar,
+  deleteScholar,
 };
