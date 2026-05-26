@@ -12,7 +12,7 @@ const createScholar = async (req, res) => {
 
     res.status(201).json({
       message: "Scholar created successfully",
-      scholar,
+      data: scholar,
     });
   } catch (error) {
     res.status(500).json({
