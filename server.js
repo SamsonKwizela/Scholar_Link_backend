@@ -22,4 +22,4 @@ app.use("/api/scholars", scholarRoutes);
 app.use("/api/scholarships", scholarshipRoutes);
 app.use("/api/applications", scholarshipApplicationRoutes);
 
-app.listen(8000, () => console.log("Server running"));
+app.listen(8000, () => console.log("Server running on port 8000"));
