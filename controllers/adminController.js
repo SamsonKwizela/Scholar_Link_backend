@@ -30,6 +30,7 @@ const registerAdmin = async (req, res) => {
       email,
       phoneNumber,
       password: hashedPassword,
+      role: "admin",
     });
 
     // generate token

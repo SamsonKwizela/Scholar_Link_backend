@@ -72,6 +72,24 @@ const getScholarships = async (req, res) => {
   }
 };
 
+// GET SCHOLARSHIP BY ID
+const getScholarshipById = async (req, res) => {
+  try {
+    const scholarship = await Scholarship.findById(req.params.id).populate("scholar");
+
+    if (!scholarship) {
+      return res.status(404).json({ message: "Scholarship not found" });
+    }
+
+    res.status(200).json({
+      message: "Scholarship fetched successfully",
+      scholarship,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 // UPDATE SCHOLARSHIP
 const updateScholarship = async (req, res) => {
   try {
@@ -138,6 +156,7 @@ const deleteScholarship = async (req, res) => {
 module.exports = {
   createScholarship,
   getScholarships,
+  getScholarshipById,
   updateScholarship,
   deleteScholarship,
 };

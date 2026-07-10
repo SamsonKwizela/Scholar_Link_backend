@@ -1,24 +1,29 @@
 const express = require("express");
+const { protect, authorizeRoles } = require("../middleware/auth");
 
 const {
   createScholarship,
   getScholarships,
+  getScholarshipById,
   updateScholarship,
   deleteScholarship,
 } = require("../controllers/scholarshipController");
 
 const router = express.Router();
 
-// CREATE SCHOLARSHIP
-router.post("/create", createScholarship);
+// CREATE SCHOLARSHIP (Admin)
+router.post("/create", protect, authorizeRoles("admin"), createScholarship);
 
 // GET ALL SCHOLARSHIPS
 router.get("/", getScholarships);
 
-// UPDATE SCHOLARSHIP
-router.put("/:id", updateScholarship);
+// GET SCHOLARSHIP BY ID
+router.get("/:id", getScholarshipById);
 
-// DELETE SCHOLARSHIP
-router.delete("/:id", deleteScholarship);
+// UPDATE SCHOLARSHIP (Admin)
+router.put("/:id", protect, authorizeRoles("admin"), updateScholarship);
+
+// DELETE SCHOLARSHIP (Admin)
+router.delete("/:id", protect, authorizeRoles("admin"), deleteScholarship);
 
 module.exports = router;
