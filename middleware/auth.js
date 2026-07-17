@@ -15,16 +15,20 @@ const protect = async (req, res, next) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     
     // Try to find user in User model first
-    let user = await User.findById(decoded.id).select('-password');
+    let user = await User.findById(decoded.id);
     
     // If not found in User, try Admin model
     if (!user) {
-      user = await Admin.findById(decoded.id).select('-password');
+      user = await Admin.findById(decoded.id);
     }
 
     if (!user) {
       return next(new AppError('User not found', 401));
     }
+
+    // Convert to object and remove password
+    user = user.toObject();
+    delete user.password;
 
     req.user = user;
     next();
@@ -34,6 +38,14 @@ const protect = async (req, res, next) => {
 };
 
 const authorizeRoles = (...roles) => (req, res, next) => {
+  console.log('Authorization check:', {
+    hasUser: !!req.user,
+    userRole: req.user?.role,
+    requiredRoles: roles,
+    userId: req.user?._id,
+    userModel: req.user?.constructor?.modelName
+  });
+
   if (!req.user || !roles.includes(req.user.role)) {
     return next(new AppError('Forbidden', 403));
   }

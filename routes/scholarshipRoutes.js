@@ -12,6 +12,7 @@ const {
 const router = express.Router();
 
 // CREATE SCHOLARSHIP (Admin)
+router.post("/", protect, authorizeRoles("admin"), createScholarship);
 router.post("/create", protect, authorizeRoles("admin"), createScholarship);
 
 // GET ALL SCHOLARSHIPS

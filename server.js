@@ -16,6 +16,8 @@ const dashboardRoutes = require("./routes/dashboardRoutes");
 const applicationRoutes = require("./routes/applicationRoutes");
 const notificationRoutes = require("./routes/notificationRoutes");
 const uploadRoutes = require("./routes/uploadRoutes");
+const internshipRoutes = require("./routes/internshipRoutes");
+const { notFoundHandler, errorHandler } = require("./middleware/errorHandler");
 
 const app = express();
 
@@ -34,6 +36,13 @@ app.use("/api/assessment-attempts", assessmentAttemptRoutes);
 app.use("/api/notifications", notificationRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/upload", uploadRoutes);
+app.use("/api/internships", internshipRoutes);
 app.use("/uploads", express.static("uploads"));
+
+// 404 handler - must be after all routes
+app.use(notFoundHandler);
+
+// Global error handler - must be last
+app.use(errorHandler);
 
 app.listen(8000, () => console.log("Server running on port 8000"));
