@@ -166,8 +166,31 @@ const createUser = async (req, res) => {
   }
 };
 
+// GET ALL USERS (Admin)
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find().select('-password').lean();
+
+    res.status(200).json({
+      users: users.map(user => ({
+        _id: user._id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        phoneNumber: user.phoneNumber,
+        role: user.role,
+      })),
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   registerUser,
   loginUser,
   createUser,
+  getAllUsers,
 };
