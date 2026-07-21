@@ -25,11 +25,15 @@ app.use(cors());
 app.use(express.json());
 
 connectDB();
+
+// Initialize deadline reminder job
+const { initDeadlineReminderJob } = require('./jobs/deadlineReminder');
+initDeadlineReminderJob();
 app.use("/api/admin", adminRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/scholars", scholarRoutes);
 app.use("/api/scholarships", scholarshipRoutes);
-app.use("/api/profile", userRoutes);
+app.use("/api/users", userRoutes);
 app.use("/api/applications", applicationRoutes);
 app.use("/api/assessments", assessmentRoutes);
 app.use("/api/assessment-attempts", assessmentAttemptRoutes);

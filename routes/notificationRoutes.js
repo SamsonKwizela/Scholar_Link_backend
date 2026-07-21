@@ -1,16 +1,26 @@
 const express = require("express");
-const { protect } = require("../middleware/auth");
+const { protect, authorizeRoles } = require("../middleware/auth");
 const {
-  getNotifications,
+  getAllNotifications,
   markNotificationAsRead,
-} = require("../controllers/notificationController");
+  getEmailHistory,
+  sendBroadcastEmail,
+  sendNotification,
+  notifyScholarship,
+  notifyInternship,
+} = require("../controllers/emailController");
 
 const router = express.Router();
 
-// GET USER NOTIFICATIONS
-router.get("/", protect, getNotifications);
-
-// MARK NOTIFICATION AS READ
+// Student routes
+router.get("/", protect, getAllNotifications);
 router.patch("/:id/read", protect, markNotificationAsRead);
+router.get("/email-history", protect, getEmailHistory);
+
+// Admin routes
+router.post("/broadcast", protect, authorizeRoles("admin"), sendBroadcastEmail);
+router.post("/send", protect, authorizeRoles("admin"), sendNotification);
+router.post("/scholarship", protect, authorizeRoles("admin"), notifyScholarship);
+router.post("/internship", protect, authorizeRoles("admin"), notifyInternship);
 
 module.exports = router;
